@@ -26,7 +26,17 @@ SECRET_KEY = 'django-insecure-yf9xaj2*tacht*3^t_jgwz!7z^89etykirf#3e$@le*9d76)8c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
 
 
 # Application definition
@@ -40,8 +50,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myapp',
     'graphene_django',
-    'rest_framework'
+    'rest_framework',
+    'django.contrib.sites',
+    'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',  # For Google
+    'allauth.socialaccount.providers.facebook',  # For Facebook
+    'allauth.socialaccount.providers.twitter',  # For Twitter
+    'allauth.socialaccount.providers.github',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -139,3 +162,31 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     'var/www/static',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+GRAPHENE = {
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
+    'SCHEMA': 'myapp.schema.schema',  # Replace with your schema location
+}
+
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+# ]
+
+# CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # For local testing on your computer
+    # "http://192.168.52.163:5173",
+    "http://192.168.0.9:5173", # Replace <your-computer-ip> with the actual IP address
+]
+
