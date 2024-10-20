@@ -39,4 +39,15 @@ class UserLoginObject(graphene.ObjectType):
     email = graphene.String()
     refresh_token = graphene.String()
     access_token = graphene.String()
+
+class EventRegistrationInputObject(graphene.InputObjectType):
+    eventName = graphene.String()
+    eventDate = graphene.String()
+    eventLocation = graphene.String()
+    eventCategory = graphene.String()
     
+class EventRegistrationObject(graphene.ObjectType):
+    eventName = graphene.String()
+    eventDate = graphene.String()
+    eventLocation = graphene.String()
+    eventLocation = graphene.String()

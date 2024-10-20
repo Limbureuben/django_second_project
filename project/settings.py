@@ -100,10 +100,21 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'eventdb',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
@@ -177,16 +188,11 @@ GRAPHENE = {
     'SCHEMA': 'myapp.schema.schema',  # Replace with your schema location
 }
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:5173",
+#     "http://192.168.52.163:5173",
+#     "http://192.168.0.9",
 # ]
-
-# CORS_ALLOW_ALL_ORIGINS = True
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # For local testing on your computer
-    # "http://192.168.52.163:5173",
-    "http://192.168.0.9:5173", # Replace <your-computer-ip> with the actual IP address
-]
 
