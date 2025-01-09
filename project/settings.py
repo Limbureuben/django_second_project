@@ -50,9 +50,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myapp',
     'graphene_django',
+    'graphene_file_upload.django',
     'rest_framework',
     'django.contrib.sites',
     'corsheaders',
+    'graphql_jwt',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -67,13 +69,13 @@ SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -150,10 +152,31 @@ USE_I18N = True
 USE_TZ = True
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'limbureubenn@gmail.com'
+EMAIL_HOST_PASSWORD = 'bqxg asvo ziey eknt'
+DEFAULT_FROM_EMAIL = 'limbureubenn@gmail.com'
+# FRONTEND_URL = 'http://localhost:4200'
+# BACKEND_URL = 'http://127.0.0.1:8000'
+# FRONTEND_URL = 'http://192.168.1.124:4200'
+FRONTEND_URL = 'http://192.168.1.124:5173'
+BACKEND_URL = 'http://192.168.1.124:8000'
+
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# settings.py
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -161,18 +184,32 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# GRAPHENE = {
+#     'SCHEMA': 'myapp.schema.schema'
+# }
+
 GRAPHENE = {
-    'SCHEMA': 'myapp.schema.schema'
+    'SCHEMA': 'myapp.schema.schema',  # Adjust with your actual schema path
+    'GRAPHIQL': True,  # Make sure this is True
 }
+
 
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     'var/www/static',
 ]
+
+
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # or '/home/rooben/Desktop/django_second/project/staticfiles'
+
+
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -181,6 +218,13 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+GITHUB_CLIENT_ID = 'Ov23li8atSplYkf8MDuh'
+GITHUB_CLIENT_SECRET = 'f5b4e2a0902e10140cac7db12eb25ae9c9ea6749'
+
+
 GRAPHENE = {
     'MIDDLEWARE': [
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
@@ -188,11 +232,62 @@ GRAPHENE = {
     'SCHEMA': 'myapp.schema.schema',  # Replace with your schema location
 }
 
+import datetime
+
+GRAPHENE_JWT = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=10),  # Set token expiration
+}
+
+
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+PAYPAL_CLIENT_ID = "ASH5PiLWudBqbvHyQSZjYmHLG1tVbUBwr4PP8Lcm2jERxUuDxLI7uVh_IGZ6vQxXHzTTVWxdD-v9Hxqq"
+PAYPAL_SECRET_KEY = "EDsfudmCqcMSithjNZL85mHNUuTrigdjW8L5UZmMYda0pUHMcj4upwXeCHOVOmdUTsCOeCnkQ0Nsxhin"
+PAYPAL_ENVIRONMENT = "sandbox"
+
+BASE_URL = "http://localhost:5173"
+
+
+# PAYPAL_CLIENT_ID = 'your-paypal-client-id'
+# PAYPAL_CLIENT_SECRET = 'your-paypal-client-secret'
+# PAYPAL_API_BASE_URL = 'https://api-m.sandbox.paypal.com'
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:5173",
 #     "http://192.168.52.163:5173",
 #     "http://192.168.0.9",
+#     "http://192.168.1.124:5173",
+#     "http://192.168.240.163"
+#     "http://192.168.240.163:5173"
 # ]
+
+CORS_ALLOWED_ORIGINS = [
+     "http://localhost:5173",
+    
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",  # Allow localhost:5173 as trusted origin for CSRF
+    "https://localhost:5173",  # Also allow https://localhost:5173 if you're using HTTPS
+]
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'x-csrftoken',
+    "content-type",
+    "authorization",
+]
+
+CSRF_COOKIE_DOMAIN = "localhost"
+
+CORS_ALLOW_CREDENTIALS = True
+
+
+CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to access the cookie
+CSRF_COOKIE_SECURE = False    # Disable this for local development
+
+
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']  # Add your frontend URL
 

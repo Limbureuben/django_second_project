@@ -1,7 +1,7 @@
 from django.urls import path
-from project.myapp.views import current_weather, hourly_average_summary
+from .views import upload_product_image
 
 urlpatterns = [
-    path('api/hourly-average-summary/', hourly_average_summary, name='hourly_average_summary'),
-    path('api/current-weather/', current_weather, name='current-weather'),
+    path('upload-product-image/', upload_product_image, name='upload-product-image'),
 ]
+
