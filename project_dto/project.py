@@ -162,7 +162,8 @@ class MessageObject(graphene.ObjectType):
     email = graphene.String()
     description = graphene.String()
     date = graphene.Date()
-
+    lat = graphene.Float()
+    lng = graphene.Float()
 
 class ProductInputObject(graphene.InputObjectType):
     name = graphene.String()
